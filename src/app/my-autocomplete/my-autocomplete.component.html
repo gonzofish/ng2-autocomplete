@@ -1,0 +1,11 @@
+<form [formGroup]="autocompleteForm">
+  <input class="Search" type="text"
+    formControlName="search"
+    #textInput>
+  <ul class="list" [hidden]="hide"
+    #itemList>
+    <li *ngFor="let item of list">
+      {{ item }}
+    </li>
+  </ul>
+</form>

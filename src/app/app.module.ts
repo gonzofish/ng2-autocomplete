@@ -1,17 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { MyAutocompleteComponent } from './my-autocomplete/my-autocomplete.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MyAutocompleteComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule,
     HttpModule
   ],
   providers: [],
