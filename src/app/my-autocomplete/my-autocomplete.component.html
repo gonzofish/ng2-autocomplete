@@ -2,11 +2,15 @@
   <input class="Search" type="text"
     formControlName="search"
     (focus)="hideList(false)"
+    (keyup)="navigateByKey($event)"
     #textInput>
   <ul class="list" [hidden]="hide"
+    (mouseout)="onHighlightItem('')"
     #itemList>
-    <li *ngFor="let item of list"
-      (click)="onSelectItem($event, item)">
+    <li [class.highlighted]="highlighted === $index"
+      *ngFor="let item of list; let $index = index"
+      (click)="onSelectItem($event, item)"
+      (mouseover)="onHighlightItem(item)">
       {{ item }}
     </li>
   </ul>

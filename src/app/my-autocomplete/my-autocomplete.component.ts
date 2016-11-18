@@ -79,6 +79,48 @@ export class MyAutocompleteComponent implements OnInit {
     this.selectItem(item);
   }
 
+  navigateByKey($event: KeyboardEvent) {
+    this.hide = false;
+
+    if ($event.key === 'ArrowDown' || $event.key === 'Down' || $event.keyCode === 40) {
+      this.highlightNextItem();
+    } else if ($event.key === 'ArrowUp' || $event.key === 'Up' || $event.keyCode === 38) {
+      this.highlightPreviousItem();
+    } else if ($event.key === 'Enter' || $event.keyCode === 13) {
+      this.selectHighlightedItem();
+    } else {
+      this.hideList($event.key === 'Escape' || $event.key === 'Esc' || $event.keyCode === 27);
+    }
+  }
+
+  private highlightNextItem() {
+    let index = this.highlighted + 1;
+
+    if (index > this.list.length) {
+      index = 0;
+    }
+
+    this.onHighlightItem(index);
+  }
+
+  private highlightPreviousItem() {
+    let index = this.highlighted - 1;
+
+    if (index < 0) {
+      index = this.list.length - 1;
+    }
+
+    this.onHighlightItem(index);
+  }
+
+  onHighlightItem(index: number) {
+    this.highlighted = index;
+  }
+
+  private selectHighlightedItem() {
+    this.selectItem(this.items[this.highlighted]);
+  }
+
   selectItem(item: string) {
     this.selectEmitter.emit(item);
     this.hideList(true);
