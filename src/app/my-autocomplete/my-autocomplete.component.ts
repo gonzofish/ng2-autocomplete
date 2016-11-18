@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 import 'rxjs/add/operator/debounceTime';
 
@@ -26,7 +26,7 @@ export class MyAutocompleteComponent implements OnInit {
 
   private hasFocus: boolean = false;
 
-  autocompleteForm: FormGroup;
+  autocompleteSearch: FormControl;
   hide: boolean = true;
   highlighted: number = -1;
   list: Array<String>;
@@ -39,13 +39,11 @@ export class MyAutocompleteComponent implements OnInit {
   }
 
   private setupForm() {
-    const control = new FormControl('');
+    this.autocompleteSearch = new FormControl('');
 
-    control.valueChanges.debounceTime(300)
+    this.autocompleteSearch.valueChanges
+      .debounceTime(300)
       .subscribe((data) => this.updateList(data));
-    this.autocompleteForm = new FormGroup({
-      search: control
-    });
   }
 
   private updateList(searchValue: string) {
@@ -126,7 +124,7 @@ export class MyAutocompleteComponent implements OnInit {
   }
 
   selectItem(item: string) {
-    this.autocompleteForm.controls['search'].setValue(item);
+    this.autocompleteSearch.setValue(item);
     this.selected.emit(item);
     this.hideList(true);
   }
