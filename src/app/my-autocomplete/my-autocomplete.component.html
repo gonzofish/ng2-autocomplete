@@ -1,6 +1,7 @@
 <form [formGroup]="autocompleteForm">
   <input class="Search" type="text"
     formControlName="search"
+    (focus)="hideList(false)"
     #textInput>
   <ul class="list" [hidden]="hide"
     #itemList>

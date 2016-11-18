@@ -57,8 +57,24 @@ export class MyAutocompleteComponent implements OnInit {
 
       return list;
     }, []);
-    console.info(this.list, this.items);
   }
 
-  onDocumentClick() { }
+  onDocumentClick($event: MouseEvent) {
+    let current: any = $event.target;
+
+    while (!this.checkIsInside(current) && current !== document) {
+      current = current.parentNode;
+    }
+
+    this.hideList(!this.checkIsInside(current));
+  }
+
+  private checkIsInside(node: any) {
+    return node === this.textInput.nativeElement ||
+      node === this.itemList.nativeElement;
+  }
+
+  hideList(hide: boolean) {
+    this.hide = hide;
+  }
 }
