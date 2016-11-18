@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnInit,
   Output,
@@ -12,19 +13,18 @@ import { FormControl, FormGroup } from '@angular/forms';
 import 'rxjs/add/operator/debounceTime';
 
 @Component({
-  host: {
-    '(document:click)': 'onDocumentClick($event)'
-  },
   selector: 'my-autocomplete',
   templateUrl: './my-autocomplete.component.html',
   styleUrls: ['./my-autocomplete.component.css']
 })
 export class MyAutocompleteComponent implements OnInit {
   @Input() items: Array<string>;
-  @Output('selected') selectEmitter = new EventEmitter();
+  @Output() selected = new EventEmitter();
 
   @ViewChild('itemList') private itemList: ElementRef;
   @ViewChild('textInput') private textInput: ElementRef;
+
+  private hasFocus: boolean = false;
 
   autocompleteForm: FormGroup;
   hide: boolean = true;
@@ -59,6 +59,7 @@ export class MyAutocompleteComponent implements OnInit {
     }, []);
   }
 
+  @HostListener('document:click', ['$event'])
   onDocumentClick($event: MouseEvent) {
     let current: any = $event.target;
 
@@ -66,7 +67,10 @@ export class MyAutocompleteComponent implements OnInit {
       current = current.parentNode;
     }
 
-    this.hideList(!this.checkIsInside(current));
+    if (!this.checkIsInside(current)) {
+      this.hasFocus = false;
+      this.hideList(true);
+    }
   }
 
   private checkIsInside(node: any) {
@@ -96,7 +100,7 @@ export class MyAutocompleteComponent implements OnInit {
   private highlightNextItem() {
     let index = this.highlighted + 1;
 
-    if (index > this.list.length) {
+    if (index > this.list.length - 1) {
       index = 0;
     }
 
@@ -122,8 +126,16 @@ export class MyAutocompleteComponent implements OnInit {
   }
 
   selectItem(item: string) {
-    this.selectEmitter.emit(item);
+    this.autocompleteForm.controls['search'].setValue(item);
+    this.selected.emit(item);
     this.hideList(true);
+  }
+
+  onInputFocused($event: Event) {
+    if (!this.hasFocus) {
+      this.hasFocus = true;
+      this.hideList(false);
+    }
   }
 
   hideList(hide: boolean) {

@@ -1,16 +1,16 @@
 <form [formGroup]="autocompleteForm">
   <input class="Search" type="text"
     formControlName="search"
-    (focus)="hideList(false)"
+    (focus)="onInputFocused($event)"
     (keyup)="navigateByKey($event)"
     #textInput>
   <ul class="list" [hidden]="hide"
-    (mouseout)="onHighlightItem('')"
+    (mouseout)="onHighlightItem(-1)"
     #itemList>
     <li [class.highlighted]="highlighted === $index"
       *ngFor="let item of list; let $index = index"
       (click)="onSelectItem($event, item)"
-      (mouseover)="onHighlightItem(item)">
+      (mouseover)="onHighlightItem($index)">
       {{ item }}
     </li>
   </ul>
