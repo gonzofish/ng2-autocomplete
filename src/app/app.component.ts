@@ -13,4 +13,9 @@ export class AppComponent {
     'shirt',
     'storm'
   ];
+  selectedItem: string = '';
+
+  onItemSelected(item: string) {
+    this.selectedItem = item;
+  }
 }

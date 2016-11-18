@@ -74,6 +74,16 @@ export class MyAutocompleteComponent implements OnInit {
       node === this.itemList.nativeElement;
   }
 
+  onSelectItem($event: MouseEvent, item: string) {
+    $event.stopImmediatePropagation();
+    this.selectItem(item);
+  }
+
+  selectItem(item: string) {
+    this.selectEmitter.emit(item);
+    this.hideList(true);
+  }
+
   hideList(hide: boolean) {
     this.hide = hide;
   }

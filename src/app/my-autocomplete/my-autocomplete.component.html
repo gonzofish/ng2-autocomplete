@@ -5,7 +5,8 @@
     #textInput>
   <ul class="list" [hidden]="hide"
     #itemList>
-    <li *ngFor="let item of list">
+    <li *ngFor="let item of list"
+      (click)="onSelectItem($event, item)">
       {{ item }}
     </li>
   </ul>

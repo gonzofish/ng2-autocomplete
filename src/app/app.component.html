@@ -1,1 +1,6 @@
-<my-autocomplete [items]="myItems"></my-autocomplete>
+<my-autocomplete [items]="myItems"
+  (selected)="onItemSelected($event)"></my-autocomplete>
+<div>
+  <strong>Selected value:</strong>
+  {{ selectedItem }}
+</div>
